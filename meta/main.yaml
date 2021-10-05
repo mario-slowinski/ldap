@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: mario_slowinski
+  description: Manage ldap entries
+
+  license: GPL-3.0-only
+
+  min_ansible_version: 2.10
+
+  platforms:
+    - name: GenericLinux
+      versions:
+        - any
+
+  galaxy_tags:
+    - ldap
+
+dependencies: []

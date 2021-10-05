@@ -1,0 +1,20 @@
+---
+- name: "Search ldap"
+  community.general.ldap_search:
+    server_uri: "{{ ldap_auth['server_uri'] }}"
+    bind_dn: "{{ ldap_auth['bind_dn'] }}"
+    bind_pw: "{{ ldap_auth['bind_pw'] }}"
+    validate_certs: "{{ ldap_auth['validate_certs'] | default(omit, true) }}"
+    dn: "{{ item['dn'] }}"
+    attrs: "{{ item['attrs'] | default(omit, true) }}"
+    filter: "{{ item['filter'] | default(omit, true) }}"
+    schema: "{{ item['schema'] | default(omit, true) }}"
+    scope: "{{ item['scope'] | default(omit, true) }}"
+  loop: "{{ ldap_searches }}"
+  loop_control:
+    label: "{{ item['dn'] }}"
+  register: ldap_results
+
+- name: "Print results"
+  ansible.builtin.debug:
+    msg: "{{ ldap_results['results'] | map(attribute='results') }}"

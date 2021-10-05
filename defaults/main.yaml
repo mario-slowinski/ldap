@@ -1,0 +1,6 @@
+---
+ldap_bind_dn: "cn=admin,dc=example,dc=com"
+ldap_bind_pw: "adminpassword"
+ldap_server_uri: "ldapi:///"
+ldap_base: "dc=example,dc=com"
+ldap_entries: []

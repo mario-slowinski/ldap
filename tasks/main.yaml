@@ -1,0 +1,19 @@
+---
+- name: "Manage ldap entries"
+  tags:
+    - ldap
+    - ldap.entry
+  ansible.builtin.import_tasks: entry.yaml
+
+- name: "Manage ldap attributes"
+  tags:
+    - ldap
+    - ldap.attr
+  ansible.builtin.import_tasks: attr.yaml
+
+- name: "Search ldap entries"
+  tags:
+    - never
+    - ldap
+    - ldap.search
+  ansible.builtin.import_tasks: search.yaml
