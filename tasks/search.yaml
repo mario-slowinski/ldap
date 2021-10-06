@@ -10,7 +10,7 @@
     filter: "{{ item['filter'] | default(omit, true) }}"
     schema: "{{ item['schema'] | default(omit, true) }}"
     scope: "{{ item['scope'] | default(omit, true) }}"
-  loop: "{{ ldap_searches }}"
+  loop: "{{ ldap_searches | default(ldap_entries) }}"
   loop_control:
     label: "{{ item['dn'] }}"
   register: ldap_results
