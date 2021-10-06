@@ -1,5 +1,5 @@
 ---
-- name: "Manage ldap entries"
+- name: "Manage ldap entry attributes"
   community.general.ldap_attrs:
     server_uri: "{{ ldap_auth['server_uri'] }}"
     bind_dn: "{{ ldap_auth['bind_dn'] }}"
