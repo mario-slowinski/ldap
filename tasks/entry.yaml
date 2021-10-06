@@ -8,7 +8,7 @@
     dn: "{{ item['dn'] }}"
     objectClass: "{{ item['objectClass'] }}"
     attributes: "{{ item['attributes'] | default(omit) }}"
-    state: "{{ item['state'] | default(omit) }}"
+    state: "{{ ((item['state'] | default('present')) == 'absent') | ternary('absent','present') }}"
   loop: "{{ ldap_entries }}"
   loop_control:
     label: "{{ item['dn'] }} state={{ item['state'] | default('present') }}"
