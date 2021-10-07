@@ -17,3 +17,10 @@
     - ldap
     - ldap.search
   ansible.builtin.import_tasks: search.yaml
+
+- name: "Configure ldap client"
+  tags:
+    - never
+    - ldap
+    - ldap.client
+  ansible.builtin.import_tasks: client.yaml

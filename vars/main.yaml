@@ -1,0 +1,21 @@
+---
+ldap_config:
+  path: /etc/ldap.conf
+  owner: root
+  group: root
+  mode: 0o644
+  setype: etc_t
+
+ldap_secret:
+  path: /etc/ldap.secret
+  owner: root
+  group: root
+  mode: 0o600
+  setype: etc_t
+
+ldap_nsswitch:
+  path: /etc/nsswitch.conf
+  owner: root
+  group: root
+  mode: 0o644
+  setype: etc_t

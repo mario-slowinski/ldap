@@ -1,6 +1,35 @@
 ---
-ldap_bind_dn: "cn=admin,dc=example,dc=com"
-ldap_bind_pw: "adminpassword"
-ldap_server_uri: "ldapi:///"
+ldap_auth:
+  bind_dn: "cn=admin,dc=example,dc=com"
+  bind_pw: "adminpassword"
+  server_uri: "ldapi:///"
+  port: 389
+
 ldap_base: "dc=example,dc=com"
 ldap_entries: []
+
+ldap_configs:
+  - regexp: "^#*base "
+    line: "base {{ ldap_base }}"
+  - regexp: "^#*uri ldapi:///$"
+    line: "uri {{ ldap_auth['server_uri'] }}"
+  - regexp: "^#*rootbinddn "
+    line: "rootbinddn {{ ldap_auth['bind_dn'] }}"
+  - regexp: "^#*port "
+    line: "port {{ ldap_auth['port'] }}"
+  - regexp: "^#*pam_password crypt"
+    line: "#pam_password crypt"
+  - regexp: "^#*pam_password md5"
+    line: "#pam_password md5"
+  - regexp: "^#*pam_password exop"
+    line: "pam_password exop"
+
+ldap_secrets: "{{ ldap_auth['bind_pw'] }}"
+
+ldap_nsswitches:
+  - regexp: "^passwd:(.*)$"
+    line: "passwd:\\1 ldap"
+  - regexp: "^group:(.*)$"
+    line: "group:\\1 ldap"
+  - regexp: "^shadow:([^a-z]*)"
+    line: "shadow:\\1compat"
