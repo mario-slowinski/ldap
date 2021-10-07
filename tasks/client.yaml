@@ -1,0 +1,42 @@
+---
+- name: "Set LDAP client options in '{{ ldap_config['path'] }}'"
+  tags: ldap.client.config
+  ansible.builtin.lineinfile:
+    regexp: "{{ item['regexp'] }}"
+    line: "{{ item['line'] }}"
+    path: "{{ ldap_config['path'] }}"
+    owner: "{{ ldap_config['owner'] }}"
+    group: "{{ ldap_config['group'] }}"
+    mode: "{{ ldap_config['mode'] }}"
+    setype: "{{ ldap_config['setype'] }}"
+    state: "{{ item['state'] | default(omit, true) }}"
+  loop: "{{ ldap_configs }}"
+  loop_control:
+    label: "{{ item['line'] }} state={{ item['state'] | default('present') }}"
+
+- name: "Set LDAP client secret in '{{ ldap_secret['path'] }}'"
+  tags: ldap.client.secret
+  ansible.builtin.copy:
+    content: "{{ ldap_secrets }}\n"
+    dest: "{{ ldap_secret['path'] }}"
+    owner: "{{ ldap_secret['owner'] }}"
+    group: "{{ ldap_secret['group'] }}"
+    mode: "{{ ldap_secret['mode'] }}"
+    setype: "{{ ldap_secret['setype'] }}"
+    state: "{{ item['state'] | default(omit, true) }}"
+
+- name: "Set LDAP in '{{ ldap_nsswitch['path'] }}'"
+  tags: ldap.client.nsswitch
+  ansible.builtin.lineinfile:
+    regexp: "{{ item['regexp'] }}"
+    backrefs: true
+    line: "{{ item['line'] }}"
+    path: "{{ ldap_nsswitch['path'] }}"
+    owner: "{{ ldap_nsswitch['owner'] }}"
+    group: "{{ ldap_nsswitch['group'] }}"
+    mode: "{{ ldap_nsswitch['mode'] }}"
+    setype: "{{ ldap_nsswitch['setype'] }}"
+    state: "{{ item['state'] | default(omit, true) }}"
+  loop: "{{ ldap_nsswitches }}"
+  loop_control:
+    label: "{{ item['line'] }} state={{ item['state'] | default('present') }}"
