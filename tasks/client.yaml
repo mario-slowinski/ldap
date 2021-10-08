@@ -13,6 +13,7 @@
   loop: "{{ ldap_configs }}"
   loop_control:
     label: "{{ item['line'] }} state={{ item['state'] | default('present') }}"
+  become: true
 
 - name: "Set LDAP client secret in '{{ ldap_secret['path'] }}'"
   tags: ldap.client.secret
@@ -24,6 +25,20 @@
     mode: "{{ ldap_secret['mode'] }}"
     setype: "{{ ldap_secret['setype'] }}"
     state: "{{ item['state'] | default(omit, true) }}"
+  become: true
+
+- name: "Add mkhomedir to pam config in '{{ ldap_pam['path'] }}'"
+  tags: ldap.client.mkhomedir
+  ansible.builtin.lineinfile:
+    line: "session	optional			pam_mkhomedir.so"
+    insertbefore: "# end of pam-auth-update config"
+    path: "{{ ldap_pam['path'] }}"
+    owner: "{{ ldap_pam['owner'] }}"
+    group: "{{ ldap_pam['group'] }}"
+    mode: "{{ ldap_pam['mode'] }}"
+    setype: "{{ ldap_pam['setype'] }}"
+    state: "{{ item['state'] | default(omit, true) }}"
+  become: true
 
 - name: "Set LDAP in '{{ ldap_nsswitch['path'] }}'"
   tags: ldap.client.nsswitch
@@ -40,3 +55,4 @@
   loop: "{{ ldap_nsswitches }}"
   loop_control:
     label: "{{ item['line'] }} state={{ item['state'] | default('present') }}"
+  become: true
