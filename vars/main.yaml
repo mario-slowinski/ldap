@@ -19,3 +19,10 @@ ldap_nsswitch:
   group: root
   mode: 0o644
   setype: etc_t
+
+ldap_pam:
+  path: /etc/pam.d/common-session
+  owner: root
+  group: root
+  mode: 0o644
+  setype: etc_t
