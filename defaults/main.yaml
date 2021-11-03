@@ -36,9 +36,9 @@ ldap_configs:
 ldap_secrets: "{{ ldap_root['bind_pw'] }}"
 
 ldap_nsswitches:
-  - regexp: "^passwd:(.*)$"
+  - regexp: '^passwd:((?:(?:\s+\S+(?!\S))(?<!\sldap))+\s*?)$'
     line: "passwd:\\1 ldap"
-  - regexp: "^group:(.*)$"
+  - regexp: '^group:((?:(?:\s+\S+(?!\S))(?<!\sldap))+\s*?)$'
     line: "group:\\1 ldap"
   - regexp: "^shadow:([^a-z]*)"
     line: "shadow:\\1compat"
