@@ -42,3 +42,8 @@ ldap_nsswitches:
     line: "group:\\1 ldap"
   - regexp: "^shadow:([^a-z]*)"
     line: "shadow:\\1compat"
+
+ldap_pam_mkhomedir:
+    regexp: '^session\s+optional\s+pam_mkhomedir.so.*$'
+    line: "session optional\tpam_mkhomedir.so umask=0077 skel=/etc/skel"
+    insertbefore: "# end of pam-auth-update config"
