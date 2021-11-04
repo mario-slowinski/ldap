@@ -28,10 +28,11 @@
   become: true
 
 - name: "Add mkhomedir to pam config in '{{ ldap_pam['path'] }}'"
-  tags: ldap.client.mkhomedir
+  tags: ldap.client.pam
   ansible.builtin.lineinfile:
-    line: "session	optional			pam_mkhomedir.so"
-    insertbefore: "# end of pam-auth-update config"
+    regexp: "{{ ldap_pam_mkhomedir['regexp'] }}"
+    line: "{{ ldap_pam_mkhomedir['line'] }}"
+    insertbefore: "{{ ldap_pam_mkhomedir['insertbefore'] }}"
     path: "{{ ldap_pam['path'] }}"
     owner: "{{ ldap_pam['owner'] }}"
     group: "{{ ldap_pam['group'] }}"
