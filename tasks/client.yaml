@@ -27,18 +27,22 @@
     state: "{{ item['state'] | default(omit, true) }}"
   become: true
 
-- name: "Add mkhomedir to pam config in '{{ ldap_pam['path'] }}'"
+- name: "Set pam options"
   tags: ldap.client.pam
   ansible.builtin.lineinfile:
-    regexp: "{{ ldap_pam_mkhomedir['regexp'] }}"
-    line: "{{ ldap_pam_mkhomedir['line'] }}"
-    insertbefore: "{{ ldap_pam_mkhomedir['insertbefore'] }}"
-    path: "{{ ldap_pam['path'] }}"
-    owner: "{{ ldap_pam['owner'] }}"
-    group: "{{ ldap_pam['group'] }}"
-    mode: "{{ ldap_pam['mode'] }}"
-    setype: "{{ ldap_pam['setype'] }}"
+    regexp: "{{ item[1]['regexp'] | default(omit) }}"
+    line: "{{ item[1]['line'] | default(omit) }}"
+    insertbefore: "{{ item[1]['insertbefore'] | default(omit) }}"
+    backrefs: "{{ item[1]['backrefs'] | default(omit) }}"
+    path: "{{ ldap_pam_file[item[0]['name']]['path'] }}"
+    owner: "{{ ldap_pam_file[item[0]['name']]['owner'] }}"
+    group: "{{ ldap_pam_file[item[0]['name']]['group'] }}"
+    mode: "{{ ldap_pam_file[item[0]['name']]['mode'] }}"
+    setype: "{{ ldap_pam_file[item[0]['name']]['setype'] }}"
     state: "{{ item['state'] | default(omit, true) }}"
+  loop: "{{ ldap_pam_config | subelements('options') }}"
+  loop_control:
+    label: "{{ ldap_pam_file[item[0]['name']]['path'] }}"
   become: true
 
 - name: "Set LDAP in '{{ ldap_nsswitch['path'] }}'"
